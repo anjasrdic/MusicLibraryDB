@@ -301,6 +301,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
+     * get user by username only (for checking if username exists)
+     * SELECT * FROM users WHERE username = 'john';
+     */
+    public User getUserByUsername(String username) {
+
+        String selectQuery = "SELECT * FROM " + TABLE_USERS + " WHERE "
+                + KEY_USERNAME + " = '" + username + "'";
+
+        Log.e(LOG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null && c.moveToFirst()) {
+            User us = new User();
+            us.setId(c.getInt(c.getColumnIndexOrThrow(KEY_ID)));
+            us.setUsername((c.getString(c.getColumnIndexOrThrow(KEY_USERNAME))));
+            us.setPassword(c.getString(c.getColumnIndexOrThrow(KEY_PASSWORD)));
+            c.close();
+            return us;
+        }
+
+        if (c != null) c.close();
+        return null;
+    }
+
+    /*
      * get user by username and password (for login)
      * SELECT * FROM users WHERE username = 'john' AND password = '123';
      */
