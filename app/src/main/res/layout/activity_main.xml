@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -52,10 +52,11 @@
         <ListView
             android:id="@+id/lvSongs"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginBottom="24dp"/>
 
-        <!-- buttonns -->
+        <!-- btns search song by a,g-->
         <Button
             android:id="@+id/btnSearchByArtist"
             android:layout_width="match_parent"
@@ -70,13 +71,58 @@
             android:text="Pretrazi pesme po zanru"
             android:layout_marginBottom="8dp"/>
 
-        <Button
-            android:id="@+id/btnAddSong"
+        <!-- btns delete a,g,s,PL -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dodaj novu pesmu"
-            android:layout_marginBottom="8dp"/>
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
+            <Button
+                android:id="@+id/btnDeleteArtist"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Obrisi izvodjaca"
+                android:backgroundTint="#D32F2F"
+                android:layout_marginEnd="4dp"/>
+
+            <Button
+                android:id="@+id/btnDeleteGenre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Obrisi zanr"
+                android:backgroundTint="#D32F2F"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/btnDeleteSong"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Obrisi pesmu"
+                android:backgroundTint="#D32F2F"
+                android:layout_marginEnd="4dp"/>
+
+            <Button
+                android:id="@+id/btnDeletePlaylist"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Obrisi plejlistu"
+                android:backgroundTint="#D32F2F"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+
+        <!-- btns delete and restore database-->
         <Button
             android:id="@+id/btnDeleteDatabase"
             android:layout_width="match_parent"
@@ -90,7 +136,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Vrati pocetne podatke"
-            android:backgroundTint="#388E3C"/>
+            android:backgroundTint="#388E3C"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- btn logout -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Odjavi se" />
 
     </LinearLayout>
 

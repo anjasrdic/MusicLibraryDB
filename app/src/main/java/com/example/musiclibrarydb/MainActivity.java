@@ -2,9 +2,11 @@ package com.example.musiclibrarydb;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -32,6 +34,15 @@ public class MainActivity extends AppCompatActivity {
     Button btnSearchByArtist;
     Button btnSearchByGenre;
     Button btnRestoreDatabase;
+    Button btnDeleteArtist;
+    Button btnDeleteGenre;
+    Button btnDeleteSong;
+    Button btnDeletePlaylist;
+    Button btnLogout;
+
+    // cuvanje trenutno selektovane pesme za brisanje
+    private String selectedSongTitle;
+    private long selectedSongId;
 
     @Override
     protected void onStop() {
@@ -117,6 +128,131 @@ public class MainActivity extends AppCompatActivity {
                 createTablesAndInitData();
             }
         });
+
+        btnDeleteArtist = (Button) findViewById(R.id.btnDeleteArtist);
+        btnDeleteArtist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (spnArtists.getSelectedItem() != null) {
+                    String artistName = spnArtists.getSelectedItem().toString();
+                    Artist artist = getArtistByName(artistName);
+                    if (artist != null) {
+                        // provera da li postoje pesme vezane za ovog izvodjaca
+                        List<Song> songs = databaseHelper.getSongsByArtist(artistName);
+                        if (songs.size() > 0) {
+                            // poruka da će i pesme biti obrisane (CASCADE - zato je moralo FK da se naglasi!!!)
+                            Toast.makeText(MainActivity.this,
+                                    "Brisem izvodjaca i " + songs.size() + " njegovih pesama!",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        databaseHelper.deleteArtist(artist.getId());
+                        refreshData();
+                        Toast.makeText(MainActivity.this,
+                                "Izvodjac '" + artistName + "' obrisan!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "Izaberi izvodjaca za brisanje!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnDeleteGenre = (Button) findViewById(R.id.btnDeleteGenre);
+        btnDeleteGenre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (spnGenres.getSelectedItem() != null) {
+                    String genreName = spnGenres.getSelectedItem().toString();
+                    Genre genre = getGenreByName(genreName);
+                    if (genre != null) {
+                        // proveri da li postoje pesme vezane za ovaj zanr
+                        List<Song> songs = databaseHelper.getSongsByGenre(genreName);
+                        if (songs.size() > 0) {
+                            // poruka da će i pesme biti obrisane (CASCADE - zato je moralo FK da se naglasi!!!)
+                            Toast.makeText(MainActivity.this,
+                                    "Brisem zanr i " + songs.size() + " pesama tog zanra!",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        databaseHelper.deleteGenre(genre.getId());
+                        refreshData();
+                        Toast.makeText(MainActivity.this,
+                                "Zanr '" + genreName + "' obrisan!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "Izaberi zanr za brisanje!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnDeleteSong = (Button) findViewById(R.id.btnDeleteSong);
+        btnDeleteSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedSongTitle != null && selectedSongId != 0) {
+                    //provera da li pesma postoji u nekoj playlisti, za sada samo delete
+                    databaseHelper.deleteSong(selectedSongId);
+                    refreshData();
+                    Toast.makeText(MainActivity.this,
+                            "Pesma '" + selectedSongTitle + "' obrisana!",
+                            Toast.LENGTH_SHORT).show();
+                    selectedSongTitle = null;
+                    selectedSongId = 0;
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "Selektuj pesmu u listi za brisanje!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnDeletePlaylist = (Button) findViewById(R.id.btnDeletePlaylist);
+        btnDeletePlaylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this,
+                        "WIP - ide u PlaylistsActivity",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        btnLogout = (Button) findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        // selektovanje pesme iz liste za brisanje
+        lvSongs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // hendl na sve pesme iz trenutnog adaptera
+                List<Song> allSongs = databaseHelper.getAllSongs();
+                // najdi pesmu na poziciji, prema nazivu
+                String songTitle = (String) parent.getItemAtPosition(position);
+                for (Song s : allSongs) {
+                    if (s.getTitle().equals(songTitle)) {
+                        selectedSongId = s.getId();
+                        selectedSongTitle = s.getTitle();
+                        Toast.makeText(MainActivity.this,
+                                "Selektovana pesma: " + selectedSongTitle,
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+        });
+
         databaseHelper = new DatabaseHelper(getApplicationContext());
 
         createTablesAndInitData();
@@ -214,6 +350,41 @@ public class MainActivity extends AppCompatActivity {
         List<Song> ls = databaseHelper.getAllSongs();
         loadSongsList((ArrayList<Song>) ls);
     }
+
+    //refresh
+    private void refreshData() {
+        List<Artist> artists = databaseHelper.getAllArtists();
+        loadSpinnerDataArtists((ArrayList<Artist>) artists);
+        List<Genre> genres = databaseHelper.getAllGenres();
+        loadSpinnerDataGenres((ArrayList<Genre>) genres);
+        List<Song> songs = databaseHelper.getAllSongs();
+        loadSongsList((ArrayList<Song>) songs);
+        // resetuj selektovanu pesmu
+        selectedSongTitle = null;
+        selectedSongId = 0;
+    }
+
+    // handle
+    private Artist getArtistByName(String name) {
+        List<Artist> allArtists = databaseHelper.getAllArtists();
+        for (Artist a : allArtists) {
+            if (a.getName().equals(name)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    private Genre getGenreByName(String name) {
+        List<Genre> allGenres = databaseHelper.getAllGenres();
+        for (Genre g : allGenres) {
+            if (g.getName().equals(name)) {
+                return g;
+            }
+        }
+        return null;
+    }
+
 
     void loadSpinnerDataArtists (ArrayList<Artist> al){
         ArrayList<String> artistnames = new ArrayList<>();
