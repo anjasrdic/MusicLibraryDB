@@ -675,8 +675,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
-     * getting all artists by genre (for searching artists by genre)
-     * SELECT a.id, a.name FROM artists a, genres g WHERE a.genre_id = g.id AND g.name LIKE 'Rock%';
+     * getting all artists by genre
+     * SELECT a.id, a.name FROM artists a, genres g WHERE g.name LIKE 'Rock%' AND a.genre_id = g.id;
      */
     public ArrayList<Artist> getArtistsByGenre(String genreName) {
         ArrayList<Artist> artists = new ArrayList<Artist>();
@@ -703,58 +703,71 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
-     * getting all songs by artist (for searching songs by artist)
-     * SELECT s.id, s.title FROM songs s, artists a WHERE s.artist_id = a.id AND a.name LIKE 'Beatles%';
+     * getting all songs by artist
+     * SELECT s.id, s.title, s.artist_id, s.genre_id FROM songs s, artists a WHERE a.name LIKE 'Beatles%' AND s.artist_id = a.id;
      */
     public ArrayList<Song> getSongsByArtist(String artistName) {
         ArrayList<Song> songs = new ArrayList<Song>();
 
-        String selectQuery = "SELECT  s." + KEY_ID + ", s." + KEY_SONG_TITLE + " FROM "
-                + TABLE_SONGS + " s, " + TABLE_ARTISTS + " a WHERE UPPER(a."
-                + KEY_NAME + ") LIKE '" + artistName.toUpperCase() + "%'" + " AND s."
-                + KEY_SONG_ARTIST_ID + " = " + "a." + KEY_ID;
+        String selectQuery = "SELECT s." + KEY_ID + ", s." + KEY_SONG_TITLE + ", s."
+                + KEY_SONG_ARTIST_ID + ", s." + KEY_SONG_GENRE_ID
+                + " FROM " + TABLE_SONGS + " s, " + TABLE_ARTISTS + " a "
+                + "WHERE UPPER(a." + KEY_NAME + ") LIKE '" + artistName.toUpperCase() + "%' "
+                + "AND s." + KEY_SONG_ARTIST_ID + " = a." + KEY_ID;
 
         Log.e(LOG, selectQuery);
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
         if (c.moveToFirst()) {
             do {
-                long song_id = c.getInt(c.getColumnIndexOrThrow(KEY_ID));
-                Song s = getSong(song_id);
-                songs.add(s);
+                Song song = new Song();
+                song.setId(c.getLong(c.getColumnIndexOrThrow(KEY_ID)));
+                song.setTitle(c.getString(c.getColumnIndexOrThrow(KEY_SONG_TITLE)));
+                song.setArtistId(c.getLong(c.getColumnIndexOrThrow(KEY_SONG_ARTIST_ID)));
+                song.setGenreId(c.getLong(c.getColumnIndexOrThrow(KEY_SONG_GENRE_ID)));
+                // artist name
+                song.setArtistName(artistName);
+                songs.add(song);
             } while (c.moveToNext());
         }
+        c.close();
 
+        Log.d(LOG, "Vracam " + songs.size() + " pesama za izvodjaca: " + artistName);
         return songs;
     }
 
     /*
-     * getting all songs by genre (for searching songs by genre)
-     * SELECT s.id, s.title FROM songs s, genres g WHERE s.genre_id = g.id AND g.name LIKE 'Rock%';
+     * getting all songs by genre
+     * SELECT s.id, s.title, s.artist_id, s.genre_id FROM songs s, genres g WHERE g.name LIKE 'Rock%' AND s.genre_id = g.id;
      */
     public ArrayList<Song> getSongsByGenre(String genreName) {
         ArrayList<Song> songs = new ArrayList<Song>();
 
-        String selectQuery = "SELECT  s." + KEY_ID + ", s." + KEY_SONG_TITLE + " FROM "
-                + TABLE_SONGS + " s, " + TABLE_GENRES + " g WHERE UPPER(g."
-                + KEY_NAME + ") LIKE '" + genreName.toUpperCase() + "%'" + " AND s."
-                + KEY_SONG_GENRE_ID + " = " + "g." + KEY_ID;
+        String selectQuery = "SELECT s." + KEY_ID + ", s." + KEY_SONG_TITLE + ", s."
+                + KEY_SONG_ARTIST_ID + ", s." + KEY_SONG_GENRE_ID
+                + " FROM " + TABLE_SONGS + " s, " + TABLE_GENRES + " g "
+                + "WHERE UPPER(g." + KEY_NAME + ") LIKE '" + genreName.toUpperCase() + "%' "
+                + "AND s." + KEY_SONG_GENRE_ID + " = g." + KEY_ID;
 
         Log.e(LOG, selectQuery);
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
         if (c.moveToFirst()) {
             do {
-                long song_id = c.getInt(c.getColumnIndexOrThrow(KEY_ID));
-                Song s = getSong(song_id);
-                songs.add(s);
+                Song song = new Song();
+                song.setId(c.getLong(c.getColumnIndexOrThrow(KEY_ID)));
+                song.setTitle(c.getString(c.getColumnIndexOrThrow(KEY_SONG_TITLE)));
+                song.setArtistId(c.getLong(c.getColumnIndexOrThrow(KEY_SONG_ARTIST_ID)));
+                song.setGenreId(c.getLong(c.getColumnIndexOrThrow(KEY_SONG_GENRE_ID)));
+                song.setGenreName(genreName);
+                songs.add(song);
             } while (c.moveToNext());
         }
+        c.close();
 
+        Log.d(LOG, "Vracam " + songs.size() + " pesama za zanr: " + genreName);
         return songs;
     }
 

@@ -7,13 +7,91 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Music Library DB"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- artists -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Izvodjaci:"/>
+        <Spinner
+            android:id="@+id/spnArtists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- zanrovi -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zanrovi:"/>
+        <Spinner
+            android:id="@+id/spnGenres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- pesme -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pesme:"/>
+        <ListView
+            android:id="@+id/lvSongs"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- buttonns -->
+        <Button
+            android:id="@+id/btnSearchByArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pretrazi pesme po izvodjacu"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnSearchByGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pretrazi pesme po zanru"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnAddSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dodaj novu pesmu"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnDeleteDatabase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Obrisi bazu"
+            android:backgroundTint="#D32F2F"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnRestoreDatabase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vrati pocetne podatke"
+            android:backgroundTint="#388E3C"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
