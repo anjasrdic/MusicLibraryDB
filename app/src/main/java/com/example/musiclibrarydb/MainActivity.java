@@ -2,16 +2,15 @@ package com.example.musiclibrarydb;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
 
 import com.example.musiclibrarydb.sqlite.helper.DatabaseHelper;
 import com.example.musiclibrarydb.sqlite.model.Artist;
 import com.example.musiclibrarydb.sqlite.model.Genre;
 import com.example.musiclibrarydb.sqlite.model.Song;
 
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     void createTablesAndInitData() {
         databaseHelper.createTables();
 
-        if (databaseHelper.getAllArtists().size() == 0) {
+        if (databaseHelper.getAllArtists().isEmpty()) {
             // ubacivanje zanrova i pamcenje IDs
             Genre g1 = new Genre("Rock");
             Genre g2 = new Genre("Pop");

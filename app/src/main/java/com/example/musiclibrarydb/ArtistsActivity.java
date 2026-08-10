@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.*;
+import android.view.View;
 
 import com.example.musiclibrarydb.sqlite.helper.DatabaseHelper;
 import com.example.musiclibrarydb.sqlite.model.Artist;
@@ -59,7 +59,7 @@ public class ArtistsActivity extends AppCompatActivity {
             if (selectedArtistName != null && selectedArtistId != 0) {
                 // provera da li postoje pesme vezane za ovog izvodjaca
                 List<Song> songs = databaseHelper.getSongsByArtist(selectedArtistName);
-                if (songs.size() > 0) {
+                if (!songs.isEmpty()) {
                     // poruka da će i pesme biti obrisane (CASCADE - zato je moralo FK da se naglasi!!!)
                     Toast.makeText(this, "Brisem izvodjaca i " + songs.size() + " njegovih pesama!", Toast.LENGTH_LONG).show();
                 }

@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.*;
+import android.view.View;
+
 import com.example.musiclibrarydb.sqlite.helper.DatabaseHelper;
 import com.example.musiclibrarydb.sqlite.model.Genre;
 import com.example.musiclibrarydb.sqlite.model.Song;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class GenresActivity extends AppCompatActivity {
             if (selectedGenreName != null && selectedGenreId != 0) {
                 // proveri da li postoje pesme vezane za ovaj zanr
                 List<Song> songs = databaseHelper.getSongsByGenre(selectedGenreName);
-                if (songs.size() > 0) {
+                if (!songs.isEmpty()) {
                     // poruka da će i pesme biti obrisane (CASCADE - zato je moralo FK da se naglasi!!!)
                     Toast.makeText(this, "Brisem zanr i " + songs.size() + " pesama tog zanra!", Toast.LENGTH_LONG).show();
                 }
