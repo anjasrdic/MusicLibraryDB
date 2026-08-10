@@ -78,6 +78,14 @@
             android:text="Obrisi pesmu"
             android:backgroundTint="#EF2929"/>
 
+        <Button
+            android:id="@+id/btnBackToMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nazad na pocetni ekran"
+            android:backgroundTint="#67717E"
+            android:layout_marginTop="8dp"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

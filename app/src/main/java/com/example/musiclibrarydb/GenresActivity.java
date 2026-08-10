@@ -2,6 +2,7 @@ package com.example.musiclibrarydb;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -16,7 +17,7 @@ public class GenresActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     ListView lvGenres;
     EditText etSearch;
-    Button btnSearch, btnAddGenre, btnDeleteGenre, btnEditGenre;
+    Button btnSearch, btnAddGenre, btnDeleteGenre, btnEditGenre, btnBackToMain;
 
     private String selectedGenreName;
     private long selectedGenreId;
@@ -92,6 +93,15 @@ public class GenresActivity extends AppCompatActivity {
                     break;
                 }
             }
+        });
+
+        // back to main
+        btnBackToMain = findViewById(R.id.btnBackToMain);
+        btnBackToMain.setOnClickListener(v -> {
+            Intent intent = new Intent(GenresActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         });
     }
 

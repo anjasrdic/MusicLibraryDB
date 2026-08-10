@@ -25,9 +25,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Radovi u toku..."
+            android:text="WIP"
             android:textSize="18sp"
             android:textColor="#888888"/>
+
+        <Button
+            android:id="@+id/btnBackToMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nazad na pocetni ekran"
+            android:backgroundTint="#67717E"
+            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 

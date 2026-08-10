@@ -2,6 +2,7 @@ package com.example.musiclibrarydb;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -19,7 +20,7 @@ public class ArtistsActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     ListView lvArtists;
     Spinner spnGenres;
-    Button btnSearchByGenre, btnAddArtist, btnDeleteArtist, btnEditArtist;
+    Button btnSearchByGenre, btnAddArtist, btnDeleteArtist, btnEditArtist, btnBackToMain;
 
     private String selectedArtistName;
     private long selectedArtistId;
@@ -94,6 +95,15 @@ public class ArtistsActivity extends AppCompatActivity {
                     break;
                 }
             }
+        });
+
+        // back to main
+        btnBackToMain = findViewById(R.id.btnBackToMain);
+        btnBackToMain.setOnClickListener(v -> {
+            Intent intent = new Intent(ArtistsActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         });
     }
 
