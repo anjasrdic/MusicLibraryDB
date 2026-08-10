@@ -14,9 +14,6 @@ import com.example.musiclibrarydb.sqlite.model.Song;
 import com.example.musiclibrarydb.sqlite.model.User;
 
 import java.util.ArrayList;
-import java.util.List;
-
-
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     SQLiteDatabase db;
@@ -852,6 +849,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return songs;
+    }
+
+    /*
+     * searching genres by name (for search functionality)
+     * SELECT * FROM genres WHERE name LIKE '%rock%';
+     */
+    public ArrayList<Genre> searchGenresByName(String query) {
+        ArrayList<Genre> genres = new ArrayList<Genre>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_GENRES + " WHERE UPPER("
+                + KEY_NAME + ") LIKE '%" + query.toUpperCase() + "%'";
+
+        Log.e(LOG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Genre g = new Genre();
+                g.setId(c.getInt((c.getColumnIndexOrThrow(KEY_ID))));
+                g.setName((c.getString(c.getColumnIndexOrThrow(KEY_NAME))));
+
+                genres.add(g);
+            } while (c.moveToNext());
+        }
+
+        return genres;
     }
 
     // closing database

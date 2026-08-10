@@ -5,57 +5,65 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ArtistsActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="32dp">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Music Library DB"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="48dp"/>
-
-        <Button
-            android:id="@+id/btnSongs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pesme"
-            android:layout_marginBottom="16dp"/>
-
-        <Button
-            android:id="@+id/btnArtists"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="Izvodjaci"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
             android:layout_marginBottom="16dp"/>
 
-        <Button
-            android:id="@+id/btnGenres"
+        <Spinner
+            android:id="@+id/spnGenres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zanrovi"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="8dp"/>
 
         <Button
-            android:id="@+id/btnPlaylists"
+            android:id="@+id/btnSearchByGenre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Plejliste"
-            android:layout_marginBottom="32dp"/>
+            android:text="Pretrazi po zanru"
+            android:layout_marginBottom="8dp"/>
+
+        <ListView
+            android:id="@+id/lvArtists"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp"/>
 
         <Button
-            android:id="@+id/btnLogout"
+            android:id="@+id/btnAddArtist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Odjavi se"
-            android:backgroundTint="#D92A2A"/>
+            android:text="Dodaj izvodjaca"
+            android:backgroundTint="#4CAF50"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btnEditArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Izmeni izvodajca"
+            android:backgroundTint="#00BCD4"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btnDeleteArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Obrisi izvodjaca"
+            android:backgroundTint="#EF2929"/>
 
     </LinearLayout>
 
